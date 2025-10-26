@@ -15,7 +15,8 @@ import { useToast } from '@/hooks/use-toast';
 
 export const MessageInput = () => {
   const [input, setInput] = useState('');
-  const { currentChatId, selectedModel, setSelectedModel, isLoading, setIsLoading, addMessage } = useChatStore();
+  const { currentChatId, selectedModel, setSelectedModel, isLoading, setIsLoading } =
+    useChatStore();
   const { toast } = useToast();
 
   const sendMessage = async () => {
@@ -26,40 +27,44 @@ export const MessageInput = () => {
     setIsLoading(true);
 
     try {
-      // Insert user message
+      // Insert user message into Supabase
       const { data: userMsg, error: userError } = await supabase
         .from('messages')
         .insert({
           chat_id: currentChatId,
           role: 'user',
-          text: userMessage
+          text: userMessage,
         })
         .select()
         .single();
 
       if (userError) throw userError;
 
-      // Call AI model endpoint
-      const { data: aiResponse, error: aiError } = await supabase.functions.invoke(
-        selectedModel,
-        {
-          body: { 
-            message: userMessage,
-            chat_id: currentChatId
-          }
-        }
-      );
+      // --- Call local FastAPI endpoint based on model ---
+      const endpoint =
+        selectedModel === 'anum'
+          ? 'http://localhost:8001/predictes' // Anum model
+          : 'http://localhost:8000/predict';  // Default model
 
-      if (aiError) throw aiError;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: userMessage }),
+      });
 
-      // Insert AI response
-      await supabase
-        .from('messages')
-        .insert({
-          chat_id: currentChatId,
-          role: 'assistant',
-          text: aiResponse.response
-        });
+      if (!res.ok) {
+        throw new Error('Failed to fetch AI response from local server');
+      }
+
+      const data = await res.json();
+      const aiResponseText = `${data.sentiment} (Score: ${data.score})`;
+
+      // Insert AI response into Supabase
+      await supabase.from('messages').insert({
+        chat_id: currentChatId,
+        role: 'assistant',
+        text: aiResponseText,
+      });
 
       // Update chat title if it's the first message
       const { data: messages } = await supabase
@@ -68,19 +73,16 @@ export const MessageInput = () => {
         .eq('chat_id', currentChatId);
 
       if (messages && messages.length === 2) {
-        const title = userMessage.slice(0, 50) + (userMessage.length > 50 ? '...' : '');
-        await supabase
-          .from('chats')
-          .update({ title })
-          .eq('id', currentChatId);
+        const title =
+          userMessage.slice(0, 50) + (userMessage.length > 50 ? '...' : '');
+        await supabase.from('chats').update({ title }).eq('id', currentChatId);
       }
-
     } catch (error: any) {
       console.error('Error sending message:', error);
       toast({
         title: 'Error',
         description: error.message || 'Failed to send message',
-        variant: 'destructive'
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -97,8 +99,12 @@ export const MessageInput = () => {
   return (
     <div className="border-t border-border bg-background p-4">
       <div className="mx-auto max-w-3xl space-y-3">
+        {/* Model Selector */}
         <div className="flex items-center gap-3">
-          <Select value={selectedModel} onValueChange={(v: 'anum' | 'aanum') => setSelectedModel(v)}>
+          <Select
+            value={selectedModel}
+            onValueChange={(v: 'anum' | 'aanum') => setSelectedModel(v)}
+          >
             <SelectTrigger className="w-40">
               <SelectValue />
             </SelectTrigger>
@@ -109,6 +115,7 @@ export const MessageInput = () => {
           </Select>
         </div>
 
+        {/* Message input and send button */}
         <div className="flex gap-2">
           <Textarea
             value={input}
