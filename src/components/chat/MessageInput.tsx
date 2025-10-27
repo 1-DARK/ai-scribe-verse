@@ -220,7 +220,7 @@ export const MessageInput = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className='bg-gradient-to-b from-zinc-900 to-zinc-700'>
-                <SelectItem value="Numerical" className="flex items-center gap-2">
+                <SelectItem value="Numerical" className="flex  items-center gap-2">
                   <Badge variant="secondary" className="text-xs">Numerical</Badge>
                   <span className='m-2'>Model</span>
                 </SelectItem>

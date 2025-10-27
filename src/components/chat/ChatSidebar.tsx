@@ -233,10 +233,10 @@ export const ChatSidebar = () => {
                           variant="ghost"
                           className="h-7 w-7"
                         >
-                          <MoreVertical className="h-3 w-3" />
+                          <MoreVertical className="h-3 w-3 " />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuContent align="end" className="w-48 bg-gradient-to-b from-zinc-900 to-zinc-800 ">
                         <DropdownMenuItem
                           onClick={() => {
                             setEditingChatId(chat.id);

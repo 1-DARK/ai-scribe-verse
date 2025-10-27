@@ -25,14 +25,14 @@ const Landing = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary">
+    <div className="min-h-screen  bg-gradient-to-b from-zinc-950 to-zinc-800">
       <header className="container mx-auto px-4 py-6">
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">AI Chat</span>
+          
+            <span className="text-2xl font-bold">AutoInsight</span>
           </div>
-          <Button onClick={() => navigate('/auth')} variant="outline">
+          <Button onClick={() => navigate('/auth')} variant="outline" className=' bg-gradient-to-b from-zinc-700 to-zinc-800'>
             Sign In
           </Button>
         </nav>
@@ -52,17 +52,17 @@ const Landing = () => {
             Choose between Anum and Aanum for your perfect conversation.
           </p>
 
-          <div className="mb-16 flex flex-wrap justify-center gap-4">
-            <Button size="lg" onClick={() => navigate('/auth')}>
+          <div className="mb-16 flex  flex-wrap justify-center gap-4">
+            <Button size="lg" onClick={() => navigate('/auth')} className='bg-zinc-700 hover:bg-zinc-800'>
               Get Started Free
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/auth')}>
+            <Button size="lg" variant="outline" onClick={() => navigate('/auth')} className='bg-zinc-700 hover:bg-zinc-800'>
               Learn More
             </Button>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="rounded-lg border border-border bg-card p-6">
+          <div className="grid gap-8 md:grid-cols-3 ">
+            <div className="rounded-lg border border-border  bg-gradient-to-b from-zinc-700 to-zinc-800 p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
                 <Sparkles className="h-6 w-6 text-primary" />
               </div>
@@ -72,7 +72,7 @@ const Landing = () => {
               </p>
             </div>
 
-            <div className="rounded-lg border border-border bg-card p-6">
+            <div className="rounded-lg border border-border  bg-gradient-to-b from-zinc-700 to-zinc-800 p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
                 <MessageSquare className="h-6 w-6 text-primary" />
               </div>
@@ -82,7 +82,7 @@ const Landing = () => {
               </p>
             </div>
 
-            <div className="rounded-lg border border-border bg-card p-6">
+            <div className="rounded-lg border border-border  bg-gradient-to-b from-zinc-700 to-zinc-800 p-6">
               <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
                 <Zap className="h-6 w-6 text-primary" />
               </div>

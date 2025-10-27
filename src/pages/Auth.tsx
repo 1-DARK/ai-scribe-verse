@@ -90,23 +90,23 @@ const Auth = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-zinc-950 to-zinc-800 p-4">
+      <Card className="w-full max-w-md bg-gradient-to-b from-zinc-800 to-zinc-950">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 inline-flex rounded-lg bg-primary p-3">
-            <MessageSquare className="h-8 w-8 text-primary-foreground" />
+          <div className="mx-auto mb-4 inline-flex rounded-lg bg-gradient-to-b from-zinc-900 to-zinc-800 p-3">
+            <MessageSquare className="h-8 w-8 text-gray-300" />
           </div>
           <CardTitle className="text-2xl">Welcome to AI Chat</CardTitle>
           <CardDescription>Sign in or create an account to get started</CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="signin">
+          <Tabs defaultValue="signin" >
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="signin">
+            <TabsContent value="signin" >
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
@@ -130,7 +130,7 @@ const Auth = () => {
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-gradient-to-b from-zinc-700 to-zinc-800" disabled={loading}>
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Sign In
                 </Button>
@@ -174,7 +174,7 @@ const Auth = () => {
                     Password must be at least 6 characters
                   </p>
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full  bg-gradient-to-b from-zinc-700 to-zinc-800" disabled={loading}>
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Create Account
                 </Button>
