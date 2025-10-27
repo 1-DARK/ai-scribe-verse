@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, MessageSquare, LogOut, Loader2, Trash2, Edit2, Check, X } from 'lucide-react';
+import { Plus, MessageSquare, LogOut, Loader2, Trash2, Edit2, Check, X, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
@@ -7,25 +7,35 @@ import { useChatStore } from '@/store/chatStore';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const ChatSidebar = () => {
   const { chats, setChats, currentChatId, setCurrentChatId, reset } = useChatStore();
   const { signOut, user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
-  const [deleteChatId, setDeleteChatId] = useState<string | null>(null);
   const [tempTitle, setTempTitle] = useState('');
+  const [isLoadingChats, setIsLoadingChats] = useState(true);
 
   useEffect(() => {
     if (user) loadChats();
   }, [user]);
 
   const loadChats = async () => {
+    setIsLoadingChats(true);
     const { data, error } = await supabase
       .from('chats')
       .select('*')
       .order('updated_at', { ascending: false });
     if (!error && data) setChats(data);
+    setIsLoadingChats(false);
   };
 
   const createNewChat = async () => {
@@ -56,7 +66,7 @@ export const ChatSidebar = () => {
 
   const updateChatTitle = async (chatId: string, newTitle: string) => {
     if (!newTitle.trim()) {
-      setEditingChatId(null); // cancel if empty
+      setEditingChatId(null);
       return;
     }
 
@@ -71,7 +81,7 @@ export const ChatSidebar = () => {
     setEditingChatId(null);
   };
 
-  const confirmDeleteChat = async (chatId: string) => {
+  const deleteChat = async (chatId: string) => {
     await supabase.from('messages').delete().eq('chat_id', chatId);
     await supabase.from('chats').delete().eq('id', chatId);
     setChats(chats.filter((c) => c.id !== chatId));
@@ -79,7 +89,6 @@ export const ChatSidebar = () => {
       setCurrentChatId('');
       useChatStore.getState().setMessages([]);
     }
-    setDeleteChatId(null);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, chatId: string) => {
@@ -90,79 +99,191 @@ export const ChatSidebar = () => {
     }
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
+    
+    if (diffInHours < 24) {
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } else if (diffInHours < 168) {
+      return date.toLocaleDateString([], { weekday: 'short' });
+    } else {
+      return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    }
+  };
+
   return (
-    <div className="flex h-full w-64 flex-col border-r border-border bg-sidebar">
-      <div className="p-4">
-        <Button onClick={createNewChat} className="w-full" disabled={loading}>
-          {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
+    <div className="flex h-full w-80 flex-col border-r border-border bg-sidebar/50 backdrop-blur-sm">
+      {/* Header */}
+      <div className="p-4 border-b border-border/50">
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            Chat History
+          </h1>
+          <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">
+            {chats.length} chats
+          </span>
+        </div>
+        <Button 
+          onClick={createNewChat} 
+          className="w-full h-11 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 transition-all duration-200 shadow-lg shadow-primary/20"
+          disabled={loading}
+        >
+          {loading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Plus className="mr-2 h-4 w-4" />
+          )}
           New Chat
         </Button>
       </div>
 
-      <Separator />
-
-      <ScrollArea className="flex-1 px-3">
-        <div className="space-y-1 py-3">
-          {chats.map((chat) => (
-            <div key={chat.id} className="flex items-center justify-between gap-2 relative">
-              <button
-                onClick={() => selectChat(chat.id)}
+      {/* Chat List */}
+      <ScrollArea className="flex-1">
+        <div className="p-3 space-y-1">
+          {isLoadingChats ? (
+            // Loading skeletons
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 rounded-lg">
+                <Skeleton className="h-4 w-4 rounded-full" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-3 w-1/2" />
+                </div>
+              </div>
+            ))
+          ) : chats.length === 0 ? (
+            // Empty state
+            <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
+              <MessageSquare className="h-12 w-12 mb-4 opacity-50" />
+              <p className="text-sm font-medium">No chats yet</p>
+              <p className="text-xs mt-1">Start a conversation to see it here</p>
+            </div>
+          ) : (
+            // Chat items
+            chats.map((chat) => (
+              <div
+                key={chat.id}
                 className={cn(
-                  "flex-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
-                  "hover:bg-sidebar-accent",
-                  currentChatId === chat.id && "bg-sidebar-accent"
+                  "group relative flex items-center gap-3 rounded-xl p-3 transition-all duration-200 cursor-pointer border",
+                  currentChatId === chat.id
+                    ? "bg-gradient-to-r from-primary/20 to-purple-600/20 border-primary/30 shadow-lg shadow-primary/5"
+                    : "border-transparent hover:bg-sidebar-accent/50 hover:border-border/50"
                 )}
               >
-                <MessageSquare className="h-4 w-4 flex-shrink-0" />
-                {editingChatId === chat.id ? (
-                  <input
-                    value={tempTitle}
-                    onChange={(e) => setTempTitle(e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(e, chat.id)}
-                    autoFocus
-                    className="flex-1 bg-gray-700 text-white px-2 py-1 rounded"
-                  />
-                ) : (
-                  <span className="truncate text-left">{chat.title}</span>
-                )}
-              </button>
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary flex-shrink-0">
+                  <MessageSquare className="h-4 w-4" />
+                </div>
 
-              <div className="flex gap-1">
-                {editingChatId !== chat.id && (
-                  <>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => { setEditingChatId(chat.id); setTempTitle(chat.title); }}
-                    >
-                      <Edit2 className="h-4 w-4" />
-                    </Button>
-                    {deleteChatId === chat.id ? (
-                      <>
-                        <Button size="icon" variant="destructive" onClick={() => confirmDeleteChat(chat.id)}>
-                          <Check className="h-4 w-4" />
-                        </Button>
-                        <Button size="icon" variant="ghost" onClick={() => setDeleteChatId(null)}>
-                          <X className="h-4 w-4" />
-                        </Button>
-                      </>
-                    ) : (
-                      <Button size="icon" variant="ghost" onClick={() => setDeleteChatId(chat.id)}>
-                        <Trash2 className="h-4 w-4" />
+                <div 
+                  className="flex-1 min-w-0 cursor-pointer"
+                  onClick={() => selectChat(chat.id)}
+                >
+                  {editingChatId === chat.id ? (
+                    <Input
+                      value={tempTitle}
+                      onChange={(e) => setTempTitle(e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e, chat.id)}
+                      onBlur={() => updateChatTitle(chat.id, tempTitle)}
+                      autoFocus
+                      className="h-7 text-sm bg-background"
+                      placeholder="Chat title..."
+                    />
+                  ) : (
+                    <>
+                      <p className="text-sm font-medium truncate text-foreground">
+                        {chat.title}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {formatDate(chat.updated_at)}
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className={cn(
+                  "flex items-center gap-1 transition-opacity",
+                  editingChatId === chat.id ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                )}>
+                  {editingChatId === chat.id ? (
+                    <>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-7 w-7 hover:bg-green-500/20 hover:text-green-600"
+                        onClick={() => updateChatTitle(chat.id, tempTitle)}
+                      >
+                        <Check className="h-3 w-3" />
                       </Button>
-                    )}
-                  </>
-                )}
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-7 w-7 hover:bg-red-500/20 hover:text-red-600"
+                        onClick={() => setEditingChatId(null)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </>
+                  ) : (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-7 w-7 hover:bg-sidebar-accent"
+                        >
+                          <MoreVertical className="h-3 w-3" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setEditingChatId(chat.id);
+                            setTempTitle(chat.title);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <Edit2 className="h-4 w-4 mr-2" />
+                          Rename
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => deleteChat(chat.id)}
+                          className="cursor-pointer text-destructive focus:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </ScrollArea>
 
-      <Separator />
-
-      <div className="p-4">
-        <Button variant="ghost" className="w-full justify-start" onClick={signOut}>
+      {/* Footer */}
+      <div className="p-4 border-t border-border/50">
+        <div className="flex items-center gap-3 mb-3 p-2 rounded-lg bg-sidebar-accent/30">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center text-xs font-medium text-white">
+            {user?.email?.charAt(0).toUpperCase()}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium truncate text-foreground">
+              {user?.email}
+            </p>
+            <p className="text-xs text-muted-foreground">Active now</p>
+          </div>
+        </div>
+        
+        <Button 
+          variant="outline" 
+          className="w-full justify-start border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
+          onClick={signOut}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           Sign Out
         </Button>
