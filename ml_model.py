@@ -8,7 +8,7 @@ app = FastAPI()
 # Enable CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8080"],  # frontend URL
+    allow_origins=["http://localhost:3000"],  # frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,7 +30,7 @@ async def predict(data: TextData):
         label = "Neutral"
     return {"sentiment": label, "score": sentiment}
 
-# Anum model endpoint
+# num model endpoint
 @app.post("/predictes")
 async def predictes(data: TextData):
     # Example: Anum can use custom phrases + TextBlob

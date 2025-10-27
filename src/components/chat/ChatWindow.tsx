@@ -61,24 +61,29 @@ export const ChatWindow = () => {
 
   if (!currentChatId) {
     return (
-      <div className="flex h-full  items-center justify-center bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 ">
-        <div className="text-center max-w-md mx-auto p-8">
-          <div className="relative mb-6">
-            <div className="absolute -inset-4 bg-primary/10 rounded-full blur-xl"></div>
-            <MessageSquare className="relative mx-auto h-20 w-20 text-gray" />
-          </div>
-          <h2 className="text-2xl font-bold bg-gray-400 bg-clip-text text-transparent mb-4">
-            Ready to Chat?
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-6">
-            Start a new conversation to begin exploring with AI. Ask questions, get help, or discuss anything you'd like.
-          </p>
-          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <Sparkles className="h-4 w-4" />
-            <span>Intelligent conversations await</span>
-          </div>
-        </div>
-      </div>
+      <div className="flex h-full items-center justify-center bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300">
+  <div className="text-center max-w-md mx-auto p-8">
+    <div className="relative mb-6">
+      <div className="absolute -inset-4 bg-primary/10 rounded-full blur-xl"></div>
+      <MessageSquare className="relative mx-auto h-20 w-20 text-gray-400" />
+    </div>
+
+    <h2 className="text-2xl font-semibold bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent mb-4">
+      Start a Conversation
+    </h2>
+
+    <p className="text-muted-foreground leading-relaxed mb-6">
+      Begin a new chat to explore insights, ask questions, or collaborate with me.  
+      Your next idea is just one message away.
+    </p>
+
+    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+      <Sparkles className="h-4 w-4" />
+      <span>Let’s create something remarkable</span>
+    </div>
+  </div>
+</div>
+
     );
   }
 
@@ -87,13 +92,8 @@ export const ChatWindow = () => {
       <div className="mx-auto max-w-4xl space-y-6 p-6">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="mb-4 rounded-full text-gray-400 p-4">
-              <Sparkles className="h-8 w-8 text-gray  " />
-            </div>
-            <h3 className="text-lg font-semibold mb-2">Start the Conversation</h3>
-            <p className="text-muted-foreground max-w-sm">
-              Send your first message to begin chatting with your AI assistant.
-            </p>
+            <h3 className="text-3xl font-semibold mb-2">How Can I help you?</h3>
+        
           </div>
         ) : (
           messages.map((message) => (
