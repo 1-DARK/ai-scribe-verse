@@ -211,12 +211,12 @@ export const MessageInput = () => {
       <div className="mx-auto max-w-4xl">
         {/* Model Selector and File Upload */}
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 ">
             <Select
               value={selectedModel}
               onValueChange={(v: 'Numerical' | 'Non-Numerical') => setSelectedModel(v)}
             >
-              <SelectTrigger className="w-50 bg-gradient-to-b from-zinc-900 to-zinc-800  border-2 data-[state=open]:border-primary/20 transition-colors">
+              <SelectTrigger className="w-50 bg-gradient-to-b from-zinc-900 to-zinc-800  ">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className='bg-gradient-to-b from-zinc-900 to-zinc-700'>
@@ -259,12 +259,12 @@ export const MessageInput = () => {
         {/* Uploaded File Preview */}
         {uploadedFile && (
           <div className="mb-3 animate-in fade-in duration-200">
-            <Card className="border-primary/20 bg-primary/5">
+            <Card className="border-gray bg-gradient-to-b from-zinc-900 to-zinc-700">
               <CardContent className="p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <span className="text-lg">{getFileIcon(uploadedFile.type)}</span>
-                    <FileText className="h-5 w-5 text-primary flex-shrink-0" />
+                    <FileText className="h-5 w-5 text-gray-300 flex-shrink-0" />
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{uploadedFile.name}</p>
                       <p className="text-xs text-muted-foreground">
@@ -321,7 +321,7 @@ export const MessageInput = () => {
                   }
                 </Button>
                 
-                {/* Mobile file upload button */}
+               
                
               </div>
             </div>
@@ -331,7 +331,7 @@ export const MessageInput = () => {
               <div className="flex items-center gap-4 flex-wrap">
                 <span>{input.length} characters</span>
                 {(isLoading || isUploading) && (
-                  <div className="flex items-center gap-1 text-primary">
+                  <div className="flex items-center gap-1 text-gray-400">
                     <Loader2 className="h-3 w-3 animate-spin" />
                     <span>{isUploading ? 'Processing file...' : 'Processing...'}</span>
                   </div>
