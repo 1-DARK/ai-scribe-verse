@@ -216,10 +216,10 @@ export const MessageInput = () => {
               value={selectedModel}
               onValueChange={(v: 'Numerical' | 'Non-Numerical') => setSelectedModel(v)}
             >
-              <SelectTrigger className="w-50 bg-background border-2 data-[state=open]:border-primary/20 transition-colors">
+              <SelectTrigger className="w-50 bg-gradient-to-b from-zinc-900 to-zinc-800  border-2 data-[state=open]:border-primary/20 transition-colors">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className='bg-gradient-to-b from-zinc-900 to-zinc-700'>
                 <SelectItem value="Numerical" className="flex items-center gap-2">
                   <Badge variant="secondary" className="text-xs">Numerical</Badge>
                   <span className='m-2'>Model</span>
@@ -232,7 +232,7 @@ export const MessageInput = () => {
             </Select>
           </div>
 
-          <div className="flex items-center gap-2 ">
+          <div className="flex items-center gap-2  ">
             <input
               type="file"
               ref={fileInputRef}
@@ -248,7 +248,7 @@ export const MessageInput = () => {
               size="sm"
               onClick={() => fileInputRef.current?.click()}
               disabled={!currentChatId || isLoading}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-gradient-to-b from-zinc-900 to-zinc-700"
             >
               <Upload className="h-4 w-4" />
               <span className="hidden sm:inline">Upload File</span>
@@ -322,16 +322,7 @@ export const MessageInput = () => {
                 </Button>
                 
                 {/* Mobile file upload button */}
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={!currentChatId || isLoading}
-                  className="h-10 w-10 md:hidden"
-                >
-                  <Upload className="h-4 w-4" />
-                </Button>
+               
               </div>
             </div>
             

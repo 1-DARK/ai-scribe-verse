@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Plus, MessageSquare, LogOut, Loader2, Trash2, Edit2, Check, X, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { useChatStore } from '@/store/chatStore';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -127,7 +126,7 @@ export const ChatSidebar = () => {
         </div>
         <Button 
           onClick={createNewChat} 
-          className="w-full h-11 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 transition-all duration-200 shadow-lg shadow-primary/20"
+          className="w-full h-11 bg-gradient-to-b from-zinc-500 to-zinc-700 hover:bg-gray-600  transition-all duration-200 shadow-lg "
           disabled={loading}
         >
           {loading ? (
