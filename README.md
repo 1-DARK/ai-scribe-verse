@@ -21,4 +21,4 @@ Here’s a summary of what powers ai-scribe-verse:
 - **Deployment & DevOps**: Vite config, bundlers/lock files, environment variables, etc, to support production and development builds.  
 - **Other tooling**: Linting (ESLint), TypeScript configs, styling via Tailwind, etc.
 
-## 📁 Project Structure  
+
