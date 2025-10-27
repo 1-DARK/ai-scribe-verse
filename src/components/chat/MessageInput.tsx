@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Send, Loader2, User, Upload, FileText, X } from 'lucide-react';
+import { Send, Loader2, Upload, FileText, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -127,7 +127,7 @@ export const MessageInput = () => {
       if (userError) throw userError;
 
       const endpoint =
-        selectedModel === 'anum'
+        selectedModel === 'Numerical'
           ? 'http://localhost:8000/predictes'
           : 'http://localhost:8000/predict';
 
@@ -207,32 +207,32 @@ export const MessageInput = () => {
   };
 
   return (
-    <div className="border-t border-border bg-background/80 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60 p-6">
+    <div className="border-t bg-gradient-to-b from-zinc-900 to-zinc-800 border-border bg-background/80 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60 p-6">
       <div className="mx-auto max-w-4xl">
         {/* Model Selector and File Upload */}
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <Select
               value={selectedModel}
-              onValueChange={(v: 'anum' | 'aanum') => setSelectedModel(v)}
+              onValueChange={(v: 'Numerical' | 'Non-Numerical') => setSelectedModel(v)}
             >
-              <SelectTrigger className="w-48 bg-background border-2 data-[state=open]:border-primary/20 transition-colors">
+              <SelectTrigger className="w-50 bg-background border-2 data-[state=open]:border-primary/20 transition-colors">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="anum" className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">ANUM</Badge>
+                <SelectItem value="Numerical" className="flex items-center gap-2">
+                  <Badge variant="secondary" className="text-xs">Numerical</Badge>
                   <span className='m-2'>Model</span>
                 </SelectItem>
-                <SelectItem value="aanum" className="flex items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">AANUM</Badge>
+                <SelectItem value="Non-Numerical" className="flex items-center gap-2">
+                  <Badge variant="secondary" className="text-xs">Non-Numerical</Badge>
                   <span className='m-2'>Model</span>
                 </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ">
             <input
               type="file"
               ref={fileInputRef}
@@ -289,12 +289,12 @@ export const MessageInput = () => {
 
         {/* Message input area */}
         <Card 
-          className="shadow-sm border-2 transition-all duration-200 focus-within:border-primary/20 focus-within:shadow-md"
+          className="shadow-sm border-2 bg-gradient-to-b from-zinc-900 to-zinc-800 text-gray-300 transition-all duration-200 focus-within:border-gray-500 focus-within:shadow-md"
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
           <CardContent className="p-0">
-            <div className="flex gap-2 p-4">
+            <div className="flex gap-2  p-4">
               <Textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -304,7 +304,7 @@ export const MessageInput = () => {
                     ? "Type your message or upload a file... (Enter to send)"
                     : "Please select or create a chat to start messaging"
                 }
-                className="min-h-[80px] resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none text-base flex-1"
+                className="min-h-[80px] bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none text-base flex-1"
                 disabled={!currentChatId || isLoading}
               />
               <div className="flex flex-col gap-2">
@@ -312,12 +312,12 @@ export const MessageInput = () => {
                   onClick={sendMessage}
                   disabled={(!input.trim() && !uploadedFile) || !currentChatId || isLoading}
                   size="icon"
-                  className="h-12 w-12 transition-all hover:scale-105 active:scale-95"
+                  className="h-12 w-12 bg-gradient-to-b from-zinc-900 to-zinc-300 text-gray-300 transition-all hover:scale-105 active:scale-95"
                   variant={isLoading ? "secondary" : "default"}
                 >
                   {isLoading 
                     ? <Loader2 className="h-5 w-5 animate-spin" /> 
-                    : <Send className="h-5 w-5" />
+                    : <Send className="h-5 text-gray-100 w-5" />
                   }
                 </Button>
                 
@@ -336,7 +336,7 @@ export const MessageInput = () => {
             </div>
             
             {/* Input footer */}
-            <div className="flex items-center justify-between px-4 py-2 bg-muted/50 border-t text-xs text-muted-foreground">
+            <div className="flex items-center justify-between px-4 py-2 bg-gradient-to-b from-zinc-700 to-zinc-800 border-t text-xs text-muted-foreground">
               <div className="flex items-center gap-4 flex-wrap">
                 <span>{input.length} characters</span>
                 {(isLoading || isUploading) && (
@@ -353,7 +353,7 @@ export const MessageInput = () => {
                 )}
               </div>
               <span className="hidden sm:block">
-                {selectedModel === 'anum' ? 'ANUM Model' : 'AANUM Model'}
+                {selectedModel === 'Numerical' ? 'Numerical Model' : 'Non-Numerical Model'}
               </span>
             </div>
           </CardContent>

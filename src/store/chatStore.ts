@@ -18,14 +18,14 @@ type ChatStore = {
   currentChatId: string | null;
   chats: Chat[];
   messages: Message[];
-  selectedModel: 'anum' | 'aanum';
+  selectedModel: 'Numerical' | 'Non-Numerical';
   isLoading: boolean;
   
   setCurrentChatId: (id: string | null) => void;
   setChats: (chats: Chat[]) => void;
   setMessages: (messages: Message[]) => void;
   addMessage: (message: Message) => void;
-  setSelectedModel: (model: 'anum' | 'aanum') => void;
+  setSelectedModel: (model: 'Numerical' | 'Non-Numerical') => void;
   setIsLoading: (loading: boolean) => void;
   reset: () => void;
 };
@@ -34,7 +34,7 @@ export const useChatStore = create<ChatStore>((set) => ({
   currentChatId: null,
   chats: [],
   messages: [],
-  selectedModel: 'anum',
+  selectedModel: 'Numerical',
   isLoading: false,
   
   setCurrentChatId: (id) => set({ currentChatId: id }),

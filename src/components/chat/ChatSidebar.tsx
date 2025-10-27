@@ -118,7 +118,7 @@ export const ChatSidebar = () => {
       {/* Header */}
       <div className="p-4 border-b border-border/50">
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-xl font-semibold bg-gradient-to-b from-zinc-500 to-zinc-700 text-gray-300  bg-clip-text text-transparent">
+          <h1 className="text-xl font-semibold  text-white bg-clip-text text-transparent">
             Chat History
           </h1>
           <span className="text-xs bg-gradient-to-b from-zinc-500 to-zinc-700 text-muted-foreground text-gray-300 bg-muted px-2 py-1 rounded-full">
