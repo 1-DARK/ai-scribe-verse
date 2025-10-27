@@ -138,7 +138,7 @@ export const MessageInput = () => {
       // Call local FastAPI endpoint based on model
       const endpoint =
         selectedModel === 'anum'
-          ? 'http://localhost:8001/predictes'
+          ? 'http://localhost:8000/predictes'
           : 'http://localhost:8000/predict';
 
       const res = await fetch(endpoint, {
