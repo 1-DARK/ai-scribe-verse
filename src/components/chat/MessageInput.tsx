@@ -26,25 +26,21 @@ export const MessageInput = () => {
   const { toast } = useToast();
 
   const handleFileUpload = async (file: File) => {
-    // Validate file type
+    // Validate file type - only CSV, Excel, and text files
     const allowedTypes = [
       'text/plain', 
-      'application/pdf', 
-      'image/jpeg', 
-      'image/png', 
-      'image/gif',
       'text/csv',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/msword'
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     ];
     
-    const allowedExtensions = ['.txt', '.pdf', '.jpg', '.jpeg', '.png', '.gif', '.csv', '.doc', '.docx'];
+    const allowedExtensions = ['.txt', '.csv', '.xls', '.xlsx'];
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
     
     if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
       toast({
         title: 'Invalid file type',
-        description: 'Please upload text, PDF, image, or document files only',
+        description: 'Please upload CSV, Excel, or text files only',
         variant: 'destructive',
       });
       return;
@@ -85,11 +81,12 @@ export const MessageInput = () => {
       
       reader.onerror = () => reject(new Error('Failed to read file'));
       
+      // Read text content for text and CSV files
       if (file.type === 'text/plain' || file.type === 'text/csv') {
         reader.readAsText(file);
       } else {
-        // For non-text files, we'll just send the filename and metadata
-        resolve(`[File: ${file.name}, Type: ${file.type}, Size: ${(file.size / 1024).toFixed(2)}KB]`);
+        // For Excel files, we'll just send the filename and metadata
+        resolve(`[Excel File: ${file.name}, Type: ${file.type}, Size: ${(file.size / 1024).toFixed(2)}KB]`);
       }
     });
   };
@@ -110,16 +107,17 @@ export const MessageInput = () => {
       if (uploadedFile) {
         try {
           fileContent = await readFileContent(uploadedFile);
-          messageContent = messageContent 
-            ? `${messageContent}\n\n--- Uploaded File ---\n${fileContent}`
-            : `--- Uploaded File ---\n${fileContent}`;
-        } catch (error) {
-          console.error('Error reading file:', error);
-          messageContent = messageContent 
-            ? `${messageContent}\n\n--- Uploaded File ---\n[File: ${uploadedFile.name} - Error reading content]`
-            : `--- Uploaded File ---\n[File: ${uploadedFile.name} - Error reading content]`;
+          messageContent = messageContent
+            ? `${messageContent}\n\n[📎 ${uploadedFile.name}]\n${fileContent}`
+            : `[📎 ${uploadedFile.name}]\n${fileContent}`;
+        } catch {
+          messageContent = messageContent
+            ? `${messageContent}\n\n[📎 ${uploadedFile.name} - Error]`
+            : `[📎 ${uploadedFile.name} - Error]`;
         }
       }
+      
+      
 
       // Insert user message into Supabase
       const { data: userMsg, error: userError } = await supabase
@@ -229,10 +227,9 @@ export const MessageInput = () => {
   };
 
   const getFileIcon = (fileType: string) => {
-    if (fileType.startsWith('image/')) return '🖼️';
-    if (fileType === 'application/pdf') return '📄';
-    if (fileType.includes('text/') || fileType === 'text/csv') return '📝';
-    if (fileType.includes('word') || fileType.includes('document')) return '📄';
+    if (fileType === 'text/plain') return '📝';
+    if (fileType === 'text/csv') return '📊';
+    if (fileType.includes('excel') || fileType.includes('spreadsheet')) return '📈';
     return '📎';
   };
 
@@ -284,7 +281,7 @@ export const MessageInput = () => {
               type="file"
               ref={fileInputRef}
               onChange={handleFileInputChange}
-              accept=".txt,.pdf,.jpg,.jpeg,.png,.gif,.csv,.doc,.docx"
+              accept=".txt,.csv,.xls,.xlsx"
               className="hidden"
               disabled={!currentChatId || isLoading}
             />
@@ -360,7 +357,7 @@ export const MessageInput = () => {
                 onKeyPress={handleKeyPress}
                 placeholder={
                   currentChatId 
-                    ? "Type your message or upload a file... (Press Enter to send, Shift+Enter for new line)" 
+                    ? "Type your message or upload a CSV, Excel, or text file... (Press Enter to send, Shift+Enter for new line)" 
                     : "Please select or create a chat to start messaging"
                 }
                 className="min-h-[80px] resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none text-base flex-1"
@@ -425,7 +422,7 @@ export const MessageInput = () => {
         {/* File type hints and drag & drop */}
         <div className="mt-2 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
           <div className="text-center sm:text-left">
-            Supported files: .txt, .pdf, .jpg, .png, .gif, .csv, .doc, .docx (Max 5MB)
+            Supported files: .txt, .csv, .xls, .xlsx (Max 5MB)
           </div>
           <div className="flex items-center gap-1">
             <Upload className="h-3 w-3" />
