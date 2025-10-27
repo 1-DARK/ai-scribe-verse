@@ -249,10 +249,6 @@ export const MessageInput = () => {
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <Bot className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">
-                AI Model
-              </span>
             </div>
             <Select
               value={selectedModel}
@@ -267,7 +263,7 @@ export const MessageInput = () => {
                     <Badge variant="secondary" className="text-xs">
                       ANUM
                     </Badge>
-                    <span>Model Anum</span>
+                    <span>Model </span>
                   </div>
                 </SelectItem>
                 <SelectItem value="aanum" className="flex items-center gap-2">
@@ -275,7 +271,7 @@ export const MessageInput = () => {
                     <Badge variant="secondary" className="text-xs">
                       AANUM
                     </Badge>
-                    <span>Model Aanum</span>
+                    <span>Model</span>
                   </div>
                 </SelectItem>
               </SelectContent>

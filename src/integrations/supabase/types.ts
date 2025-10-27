@@ -50,6 +50,9 @@ export type Database = {
         Row: {
           chat_id: string
           created_at: string
+          file_name: string | null
+          file_size: number | null
+          file_type: string | null
           id: string
           role: string
           text: string
@@ -57,6 +60,9 @@ export type Database = {
         Insert: {
           chat_id: string
           created_at?: string
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
           id?: string
           role: string
           text: string
@@ -64,6 +70,9 @@ export type Database = {
         Update: {
           chat_id?: string
           created_at?: string
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
           id?: string
           role?: string
           text?: string
