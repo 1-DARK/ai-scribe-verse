@@ -4,6 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useChatStore } from '@/store/chatStore';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 
 export const ChatWindow = () => {
   const { messages, currentChatId, addMessage } = useChatStore();
@@ -33,7 +34,7 @@ export const ChatWindow = () => {
       supabase.removeChannel(channel);
     };
   }, [currentChatId]);
-
+  const { signOut, user } = useAuth();
   useEffect(() => {
     // Auto-scroll to bottom when new messages arrive
     if (scrollRef.current) {
@@ -60,13 +61,13 @@ export const ChatWindow = () => {
 
   if (!currentChatId) {
     return (
-      <div className="flex h-full items-center justify-center bg-gradient-to-br from-background to-muted/20">
+      <div className="flex h-full  items-center justify-center bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 ">
         <div className="text-center max-w-md mx-auto p-8">
           <div className="relative mb-6">
             <div className="absolute -inset-4 bg-primary/10 rounded-full blur-xl"></div>
-            <MessageSquare className="relative mx-auto h-20 w-20 text-primary" />
+            <MessageSquare className="relative mx-auto h-20 w-20 text-gray" />
           </div>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent mb-4">
+          <h2 className="text-2xl font-bold bg-gray-400 bg-clip-text text-transparent mb-4">
             Ready to Chat?
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-6">
@@ -82,12 +83,12 @@ export const ChatWindow = () => {
   }
 
   return (
-    <ScrollArea className="h-full" ref={scrollRef}>
+    <ScrollArea className="h-full bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 " ref={scrollRef}>
       <div className="mx-auto max-w-4xl space-y-6 p-6">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="mb-4 rounded-full bg-primary/10 p-4">
-              <Sparkles className="h-8 w-8 text-primary" />
+            <div className="mb-4 rounded-full text-gray-400 p-4">
+              <Sparkles className="h-8 w-8 text-gray  " />
             </div>
             <h3 className="text-lg font-semibold mb-2">Start the Conversation</h3>
             <p className="text-muted-foreground max-w-sm">
@@ -107,13 +108,13 @@ export const ChatWindow = () => {
               <div className={cn(
                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2",
                 message.role === 'user' 
-                  ? "bg-primary text-primary-foreground border-primary/20" 
-                  : "bg-primary/10 text-primary border-primary/10"
+                  ? "bg-gray-500 border-primary/20" 
+                  : " border-primary/10"
               )}>
                 {message.role === 'user' ? (
-                  <User className="h-5 w-5" />
+                     user?.email?.charAt(0).toUpperCase()
                 ) : (
-                  <Bot className="h-5 w-5" />
+                 <img src="./AutoInsight.png" alt="" />
                 )}
               </div>
 
@@ -123,23 +124,21 @@ export const ChatWindow = () => {
                 calculateMessageWidth(message.text)
               )}>
                 <div className="flex items-center gap-3 mb-1">
-                  <p className="text-sm font-medium text-foreground/80">
-                    {message.role === 'user' ? 'You' : 'AI Assistant'}
-                  </p>
+                 
                   <span className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
                     {formatMessageTime(message.created_at)}
                   </span>
                 </div>
                 
                 <div className={cn(
-                  "rounded-2xl p-4 transition-all duration-200 border w-full",
+                  "rounded-2xl p-4 transition-all duration-200 ",
                   message.role === 'user' 
                     ? cn(
-                        "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground",
+                        " bg-gradient-to-b from-zinc-700 to-zinc-800  text-primary-foreground",
                         "rounded-br-md shadow-primary/10 border-primary/30"
                       )
                     : cn(
-                        "bg-card text-card-foreground",
+                        " bg-gradient-to-b from-zinc-800 to-zinc-700 text-card-foreground",
                         "rounded-bl-md shadow-sm border-border/50"
                       )
                 )}>

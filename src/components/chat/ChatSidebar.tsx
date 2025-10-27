@@ -114,14 +114,14 @@ export const ChatSidebar = () => {
   };
 
   return (
-    <div className="flex h-full w-80 flex-col border-r border-border bg-sidebar/50 backdrop-blur-sm">
+    <div className="flex h-full w-80 flex-col border-r bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300  border-border bg-sidebar/50 backdrop-blur-sm">
       {/* Header */}
       <div className="p-4 border-b border-border/50">
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-xl font-semibold bg-gradient-to-b from-zinc-500 to-zinc-700 text-gray-300  bg-clip-text text-transparent">
             Chat History
           </h1>
-          <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">
+          <span className="text-xs bg-gradient-to-b from-zinc-500 to-zinc-700 text-muted-foreground text-gray-300 bg-muted px-2 py-1 rounded-full">
             {chats.length} chats
           </span>
         </div>
@@ -168,11 +168,11 @@ export const ChatSidebar = () => {
                 className={cn(
                   "group relative flex items-center gap-3 rounded-xl p-3 transition-all duration-200 cursor-pointer border",
                   currentChatId === chat.id
-                    ? "bg-gradient-to-r from-primary/20 to-purple-600/20 border-primary/30 shadow-lg shadow-primary/5"
-                    : "border-transparent hover:bg-sidebar-accent/50 hover:border-border/50"
+                    ? " border-gray-400  text-gray-300   shadow-lg shadow-primary/5"
+                    : "border-transparent hover:bg-gradient-to-b from-zinc-700 to-zinc-800 text-gray-300  hover:border-border/50"
                 )}
               >
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary flex-shrink-0">
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 flex-shrink-0">
                   <MessageSquare className="h-4 w-4" />
                 </div>
 
@@ -204,7 +204,7 @@ export const ChatSidebar = () => {
 
                 {/* Actions */}
                 <div className={cn(
-                  "flex items-center gap-1 transition-opacity",
+                  "flex items-center gap-1 transition-opacity ",
                   editingChatId === chat.id ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                 )}>
                   {editingChatId === chat.id ? (
@@ -232,7 +232,7 @@ export const ChatSidebar = () => {
                         <Button
                           size="icon"
                           variant="ghost"
-                          className="h-7 w-7 hover:bg-sidebar-accent"
+                          className="h-7 w-7"
                         >
                           <MoreVertical className="h-3 w-3" />
                         </Button>
@@ -268,7 +268,7 @@ export const ChatSidebar = () => {
       {/* Footer */}
       <div className="p-4 border-t border-border/50">
         <div className="flex items-center gap-3 mb-3 p-2 rounded-lg bg-sidebar-accent/30">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-purple-600 flex items-center justify-center text-xs font-medium text-white">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-600 text-xs font-medium text-white">
             {user?.email?.charAt(0).toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
@@ -281,7 +281,7 @@ export const ChatSidebar = () => {
         
         <Button 
           variant="outline" 
-          className="w-full justify-start border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
+          className="w-full bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300  justify-start border-border/50 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 transition-all duration-200"
           onClick={signOut}
         >
           <LogOut className="mr-2 h-4 w-4" />
