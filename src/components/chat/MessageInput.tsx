@@ -129,7 +129,7 @@ export const MessageInput = () => {
           : 'http://localhost:8002/analyze';
 
       let res;
-      if (uploadedFile && selectedModel === 'Numerical') {
+      if (uploadedFile) {
         const formData = new FormData();
         formData.append('file', uploadedFile);
         
@@ -143,9 +143,6 @@ export const MessageInput = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             text: messageContent,
-            file_name: uploadedFile?.name,
-            file_type: uploadedFile?.type,
-            has_file: !!uploadedFile
           }),
         });
       }
@@ -166,7 +163,15 @@ export const MessageInput = () => {
           plots: data.plots
         });
       } else {
-        aiResponseText = `${data.sentiment} (Score: ${data.score})`;
+        // Store categorical analysis data as JSON
+        aiResponseText = JSON.stringify({
+          type: 'categorical_analysis',
+          summary: data.summary,
+          dataset_preview: data.dataset_preview,
+          column_types: data.column_types,
+          analysis: data.analysis,
+          plots: data.plots
+        });
       }
 
       await supabase.from('messages').insert({

@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { NumericalAnalysisDisplay } from './NumericalAnalysisDisplay';
+import { CategoricalAnalysisDisplay } from './CategoricalAnalysisDisplay';
 
 export const ChatWindow = () => {
   const { messages, currentChatId, addMessage } = useChatStore();
@@ -66,8 +67,11 @@ export const ChatWindow = () => {
       if (parsed.type === 'numerical_analysis') {
         return <NumericalAnalysisDisplay data={parsed} />;
       }
+      if (parsed.type === 'categorical_analysis') {
+        return <CategoricalAnalysisDisplay data={parsed} />;
+      }
     } catch {
-      // Not JSON or not a numerical analysis, render as text
+      // Not JSON or not an analysis, render as text
     }
     return <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{message.text}</p>;
   };
