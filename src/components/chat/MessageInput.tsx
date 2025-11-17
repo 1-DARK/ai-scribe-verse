@@ -153,7 +153,21 @@ export const MessageInput = () => {
       if (!res.ok) throw new Error('Failed to fetch AI response');
 
       const data = await res.json();
-      const aiResponseText = `${data.sentiment} (Score: ${data.score})`;
+      
+      let aiResponseText: string;
+      if (selectedModel === 'Numerical') {
+        // Store the full analysis data as JSON
+        aiResponseText = JSON.stringify({
+          type: 'numerical_analysis',
+          summary: data.summary,
+          dataset_preview: data.dataset_preview,
+          column_types: data.column_types,
+          analysis: data.analysis,
+          plots: data.plots
+        });
+      } else {
+        aiResponseText = `${data.sentiment} (Score: ${data.score})`;
+      }
 
       await supabase.from('messages').insert({
         chat_id: currentChatId,

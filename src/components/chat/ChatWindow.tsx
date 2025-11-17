@@ -5,6 +5,7 @@ import { useChatStore } from '@/store/chatStore';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { NumericalAnalysisDisplay } from './NumericalAnalysisDisplay';
 
 export const ChatWindow = () => {
   const { messages, currentChatId, addMessage } = useChatStore();
@@ -57,6 +58,18 @@ export const ChatWindow = () => {
     if (charCount < 150) return 'max-w-[500px]';
     if (charCount < 250) return 'max-w-[600px]';
     return 'max-w-[700px]';
+  };
+
+  const renderMessageContent = (message: any) => {
+    try {
+      const parsed = JSON.parse(message.text);
+      if (parsed.type === 'numerical_analysis') {
+        return <NumericalAnalysisDisplay data={parsed} />;
+      }
+    } catch {
+      // Not JSON or not a numerical analysis, render as text
+    }
+    return <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{message.text}</p>;
   };
 
   if (!currentChatId) {
@@ -121,7 +134,7 @@ export const ChatWindow = () => {
               {/* Message Content */}
               <div className={cn(
                 "flex-1 space-y-2",
-                calculateMessageWidth(message.text)
+                message.text.includes('numerical_analysis') ? 'max-w-full' : calculateMessageWidth(message.text)
               )}>
                 <div className="flex items-center gap-3 mb-1">
                  
@@ -142,9 +155,7 @@ export const ChatWindow = () => {
                         "rounded-bl-md shadow-sm border-border/50"
                       )
                 )}>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
-                    {message.text}
-                  </p>
+                  {renderMessageContent(message)}
                 </div>
               </div>
             </div>
