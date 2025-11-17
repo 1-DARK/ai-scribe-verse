@@ -128,16 +128,27 @@ export const MessageInput = () => {
           ? 'http://localhost:8001/analyzes'
           : 'http://localhost:8002/analyze';
 
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          text: messageContent,
-          file_name: uploadedFile?.name,
-          file_type: uploadedFile?.type,
-          has_file: !!uploadedFile
-        }),
-      });
+      let res;
+      if (uploadedFile && selectedModel === 'Numerical') {
+        const formData = new FormData();
+        formData.append('file', uploadedFile);
+        
+        res = await fetch(endpoint, {
+          method: 'POST',
+          body: formData,
+        });
+      } else {
+        res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            text: messageContent,
+            file_name: uploadedFile?.name,
+            file_type: uploadedFile?.type,
+            has_file: !!uploadedFile
+          }),
+        });
+      }
 
       if (!res.ok) throw new Error('Failed to fetch AI response');
 
