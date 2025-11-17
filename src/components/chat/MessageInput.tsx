@@ -101,8 +101,8 @@ export const MessageInput = () => {
         try {
           fileContent = await readFileContent(uploadedFile);
           messageContent = messageContent 
-            ? `${messageContent}\n\n--- Uploaded File ---\n${fileContent}`
-            : `--- Uploaded File ---\n${fileContent}`;
+            ? `${messageContent}\n\n Uploaded File \n${fileContent}`
+            : `${uploadedFile.name}`;
         } catch {
           messageContent = messageContent 
             ? `${messageContent}\n\n--- Uploaded File ---\n[File: ${uploadedFile.name} - Error reading content]`

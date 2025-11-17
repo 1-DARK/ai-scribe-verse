@@ -160,7 +160,7 @@ export const NumericalAnalysisDisplay = ({ data }: NumericalAnalysisProps) => {
             <CardTitle className="text-lg">Visualizations</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 " >
               {Object.entries(data.plots).map(([name, base64]) => (
                 <div key={name} className="space-y-2">
                   <h4 className="text-sm font-medium text-gray-300 capitalize">
