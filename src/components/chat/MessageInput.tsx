@@ -221,9 +221,9 @@ export const MessageInput = () => {
   };
 
   const getFileIcon = (fileType: string) => {
-    if (fileType.includes('sheet') || fileType.includes('excel')) return '📊';
-    if (fileType.includes('csv') || fileType.includes('text')) return '📝';
-    return '📎';
+    if (fileType.includes('sheet') || fileType.includes('excel')) return '[S]';
+    if (fileType.includes('csv') || fileType.includes('text')) return '[T]';
+    return '[F]';
   };
 
   const formatFileSize = (bytes: number) => {
@@ -292,7 +292,7 @@ export const MessageInput = () => {
                     <div className="min-w-0">
                       <p className="text-sm font-medium truncate">{uploadedFile.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        {formatFileSize(uploadedFile.size)} • {uploadedFile.type || 'Unknown type'}
+                        {formatFileSize(uploadedFile.size)} - {uploadedFile.type || 'Unknown type'}
                       </p>
                     </div>
                   </div>

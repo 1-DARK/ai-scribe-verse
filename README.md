@@ -163,31 +163,31 @@ bun run preview
 
 ```
 AI_Scribe_Verse/
-├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── ui/             # shadcn/ui components
-│   │   └── chat/           # Chat-specific components
-│   ├── pages/              # Route pages
-│   │   ├── Landing.tsx     # Landing page
-│   │   ├── Auth.tsx        # Authentication page
-│   │   ├── Chat.tsx        # Main chat interface
-│   │   └── NotFound.tsx    # 404 page
-│   ├── hooks/              # Custom React hooks
-│   ├── store/              # Zustand state management
-│   ├── integrations/       # Third-party integrations (Supabase)
-│   ├── lib/                # Utility functions
-│   ├── App.tsx             # Main app component
-│   └── main.tsx            # Application entry point
-├── supabase/
-│   ├── migrations/         # Database migrations
-│   └── config.toml         # Supabase configuration
-├── public/                 # Static assets
-├── ml_model.py             # FastAPI ML backend
-├── package.json            # Dependencies and scripts
-├── tsconfig.json           # TypeScript configuration
-├── tailwind.config.ts      # Tailwind CSS configuration
-├── vite.config.ts          # Vite configuration
-└── README.md               # This file
+|- src/
+|  |- components/          # Reusable UI components
+|  |  |- ui/               # shadcn/ui components
+|  |  |- chat/             # Chat-specific components
+|  |- pages/               # Route pages
+|  |  |- Landing.tsx       # Landing page
+|  |  |- Auth.tsx          # Authentication page
+|  |  |- Chat.tsx          # Main chat interface
+|  |  |- NotFound.tsx      # 404 page
+|  |- hooks/               # Custom React hooks
+|  |- store/               # Zustand state management
+|  |- integrations/        # Third-party integrations (Supabase)
+|  |- lib/                 # Utility functions
+|  |- App.tsx              # Main app component
+|  |- main.tsx             # Application entry point
+|- supabase/
+|  |- migrations/          # Database migrations
+|  |- config.toml          # Supabase configuration
+|- public/                 # Static assets
+|- ml_model.py             # FastAPI ML backend
+|- package.json            # Dependencies and scripts
+|- tsconfig.json           # TypeScript configuration
+|- tailwind.config.ts      # Tailwind CSS configuration
+|- vite.config.ts          # Vite configuration
+|- README.md               # This file
 ```
 
 ---

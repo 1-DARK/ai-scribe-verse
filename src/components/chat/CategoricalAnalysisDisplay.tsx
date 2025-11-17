@@ -27,7 +27,7 @@ export const CategoricalAnalysisDisplay = ({ data }: CategoricalAnalysisProps) =
         <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              📋 Column Types
+               Column Types
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -50,7 +50,7 @@ export const CategoricalAnalysisDisplay = ({ data }: CategoricalAnalysisProps) =
         <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              👀 Dataset Preview
+               Dataset Preview
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -87,7 +87,7 @@ export const CategoricalAnalysisDisplay = ({ data }: CategoricalAnalysisProps) =
         <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              📊 Value Counts
+               Value Counts
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -125,7 +125,7 @@ export const CategoricalAnalysisDisplay = ({ data }: CategoricalAnalysisProps) =
         <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              ⚠️ Missing Values
+               Missing Values
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -156,7 +156,7 @@ export const CategoricalAnalysisDisplay = ({ data }: CategoricalAnalysisProps) =
         <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              📈 Visualizations
+               Visualizations
             </CardTitle>
           </CardHeader>
           <CardContent>
