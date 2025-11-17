@@ -21,19 +21,6 @@ interface NumericalAnalysisProps {
 export const NumericalAnalysisDisplay = ({ data }: NumericalAnalysisProps) => {
   return (
     <div className="space-y-4 w-full">
-      {/* Summary */}
-      {data.summary && (
-        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              📊 Analysis Summary
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-300 leading-relaxed">{data.summary}</p>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Column Types */}
       {data.column_types?.numerical && data.column_types.numerical.length > 0 && (
@@ -190,6 +177,21 @@ export const NumericalAnalysisDisplay = ({ data }: NumericalAnalysisProps) => {
           </CardContent>
         </Card>
       )}
+
+         {/* Summary */}
+         {data.summary && (
+        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+               Analysis Summary
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-300 leading-relaxed">{data.summary}</p>
+          </CardContent>
+        </Card>
+      )}
     </div>
+
   );
 };

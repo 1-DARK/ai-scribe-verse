@@ -145,3 +145,6 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8002)
+
+
+##  python3 -m uvicorn AutoInsight_categorical:app --reload --port 8002
