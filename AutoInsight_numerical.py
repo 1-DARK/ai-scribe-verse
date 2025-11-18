@@ -115,40 +115,49 @@ def visualize_numerical(df, corr_matrix, outliers, numerical):
 
 # Function to generate summary using GPT-2
 def generate_summary(df, summary_stats, missing_values, corr_matrix, outliers, numerical):
+    summary = []
 
-    # Safely keep only existing columns
-    wanted = ['mean', 'std', 'min', 'max']
-    available_cols = [c for c in wanted if c in summary_stats.columns]
-
-    compact_stats = summary_stats[available_cols].to_string() if available_cols else "No numeric stats available"
-
-    prompt = f"""
-Summarize this dataset:
-
-Rows: {len(df)}
-Numerical Columns: {numerical}
-
-Stats (available only):
-{compact_stats}
-
-Missing Values:
-{missing_values.to_dict()}
-
-Outliers detected: {sum(outliers.values()) if outliers else 0}
-
-Generate a simple human-friendly explanation.
-"""
-
-    generator = pipeline(
-        'text-generation',
-        model='gpt2',
-        device=-1
+    summary.append(
+        f"The dataset contains {df.shape[0]} rows and {len(numerical)} numerical columns."
     )
 
-    generated = generator(prompt, max_new_tokens=150, truncation=True)
-    summary = generated[0]['generated_text']
+    # Missing values
+    total_missing = missing_values.sum()
+    if total_missing == 0:
+        summary.append("All numerical columns are complete with no missing values.")
+    else:
+        summary.append(
+            f"There are {total_missing} missing values in the numerical columns."
+        )
 
-    return summary[len(prompt):].strip()
+    # Means
+    if not summary_stats.empty:
+        means = summary_stats.loc["mean"].to_dict()
+        sample_means = dict(list(means.items())[:3])
+        summary.append(
+            f"Typical averages include: {sample_means}."
+        )
+
+    # Correlation
+    if not corr_matrix.empty:
+        corr_pairs = corr_matrix.unstack()
+        corr_pairs = corr_pairs[corr_pairs.index.get_level_values(0) != corr_pairs.index.get_level_values(1)]
+        top_corr = corr_pairs.abs().sort_values(ascending=False).head(1)
+        pair_name = f"{top_corr.index[0][0]} and {top_corr.index[0][1]}"
+        value = float(top_corr.iloc[0])
+        summary.append(
+            f"The strongest correlation is between {pair_name} (correlation: {value:.2f})."
+        )
+
+    # Outliers
+    if outliers and any(outliers.values()):
+        summary.append("Some outliers were detected in the dataset.")
+    else:
+        summary.append("No major outliers were found in the numerical columns.")
+
+    summary.append("Overall, the dataset is clean and suitable for analysis or ML tasks.")
+
+    return " ".join(summary)
 
 
 @app.post("/analyzes")

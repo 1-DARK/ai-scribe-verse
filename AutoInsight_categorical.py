@@ -80,13 +80,75 @@ def visualize_categorical(df, categorical):
 
 # Function to generate summary using GPT-2
 def generate_summary(df, analysis, categorical):
-    prompt = f"Explain this categorical dataset in simple terms: {len(df)} rows, {len(categorical)} categorical columns: {categorical}. Value counts: {json.dumps(analysis)}. Missing: {sum(analysis['missing_values'].values())}. Describe key insights."
-    generator = pipeline('text-generation', model='gpt2', device=-1)
-    generated = generator(prompt, max_new_tokens=256, num_return_sequences=1, truncation=True)
-    summary = generated[0]['generated_text']
-    if summary.startswith(prompt):
-        summary = summary[len(prompt):].strip()
-    return summary
+
+    # Prepare counts
+    counts = {
+        col.replace("_counts", ""): vals
+        for col, vals in analysis.items()
+        if col != "missing_values"
+    }
+
+    # Missing values
+    missing = analysis["missing_values"]
+
+    summary_parts = []
+
+    # --- Overview ---
+    summary_parts.append(
+        f"The dataset contains {len(df)} rows and {len(categorical)} categorical columns."
+    )
+
+    # --- Majority categories ---
+    majority_info = {}
+    for col, dist in counts.items():
+        if dist:
+            sorted_vals = sorted(dist.items(), key=lambda x: x[1], reverse=True)
+            top = sorted_vals[0]  # e.g. ('Male', 3)
+            majority_info[col] = top
+
+    if majority_info:
+        majority_str = ", ".join(
+            [f"{col}: {val[0]} ({val[1]} rows)" for col, val in majority_info.items()]
+        )
+        summary_parts.append(
+            f"Most columns have clear majority categories such as: {majority_str}."
+        )
+    else:
+        summary_parts.append("The dataset does not show clear dominant categories.")
+
+    # --- Rare categories ---
+    rare_info = {}
+    for col, dist in counts.items():
+        rare = [k for k, v in dist.items() if v == 1]
+        if rare:
+            rare_info[col] = rare
+
+    if rare_info:
+        rare_str = ", ".join(
+            [f"{col}: [{', '.join(vals)}]" for col, vals in rare_info.items()]
+        )
+        summary_parts.append(
+            f"Some columns contain rare categories occurring only once, such as: {rare_str}."
+        )
+    else:
+        summary_parts.append("No extremely rare categories were detected.")
+
+    # --- Missing values ---
+    total_missing = sum(missing.values())
+    if total_missing == 0:
+        summary_parts.append("There are no missing values in the categorical columns.")
+    else:
+        summary_parts.append(
+            f"The dataset contains {total_missing} missing values across categorical columns."
+        )
+
+    # --- Final remark ---
+    summary_parts.append(
+        "Overall, the dataset is clean and suitable for exploratory analysis or simple classification tasks."
+    )
+
+    return " ".join(summary_parts)
+
 
 @app.post("/analyze")
 async def analyze_file(file: UploadFile = File(...)):
