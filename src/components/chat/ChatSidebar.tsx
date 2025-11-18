@@ -113,11 +113,11 @@ export const ChatSidebar = () => {
   };
 
   return (
-    <div className="flex h-full w-80 flex-col border-r bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300  border-border bg-sidebar/50 backdrop-blur-sm">
+    <div className="flex h-full w-full md:w-80 flex-col border-r bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 border-border bg-sidebar/50 backdrop-blur-sm">
       {/* Header */}
-      <div className="p-4 border-b border-border/50">
+      <div className="p-3 md:p-4 border-b border-border/50">
         <div className="flex items-center justify-between mb-2">
-          <h1 className="text-xl font-semibold  text-white bg-clip-text text-transparent">
+          <h1 className="text-lg md:text-xl font-semibold text-white bg-clip-text text-transparent">
             Chat History
           </h1>
           <span className="text-xs bg-gradient-to-b from-zinc-500 to-zinc-700 text-muted-foreground text-gray-300 bg-muted px-2 py-1 rounded-full">
@@ -126,13 +126,13 @@ export const ChatSidebar = () => {
         </div>
         <Button 
           onClick={createNewChat} 
-          className="w-full h-11 bg-gradient-to-b from-zinc-500 to-zinc-700 hover:bg-gray-600  transition-all duration-200 shadow-lg "
+          className="w-full h-10 md:h-11 bg-gradient-to-b from-zinc-500 to-zinc-700 hover:bg-gray-600 transition-all duration-200 shadow-lg text-sm md:text-base"
           disabled={loading}
         >
           {loading ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 h-3 w-3 md:h-4 md:w-4 animate-spin" />
           ) : (
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 h-3 w-3 md:h-4 md:w-4" />
           )}
           New Chat
         </Button>
@@ -140,7 +140,7 @@ export const ChatSidebar = () => {
 
       {/* Chat List */}
       <ScrollArea className="flex-1">
-        <div className="p-3 space-y-1">
+        <div className="p-2 md:p-3 space-y-1">
           {isLoadingChats ? (
             // Loading skeletons
             Array.from({ length: 5 }).map((_, i) => (
@@ -154,9 +154,9 @@ export const ChatSidebar = () => {
             ))
           ) : chats.length === 0 ? (
             // Empty state
-            <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-              <MessageSquare className="h-12 w-12 mb-4 opacity-50" />
-              <p className="text-sm font-medium">No chats yet</p>
+            <div className="flex flex-col items-center justify-center py-8 md:py-12 text-center text-muted-foreground">
+              <MessageSquare className="h-10 w-10 md:h-12 md:w-12 mb-3 md:mb-4 opacity-50" />
+              <p className="text-xs md:text-sm font-medium">No chats yet</p>
               <p className="text-xs mt-1">Start a conversation to see it here</p>
             </div>
           ) : (
@@ -165,14 +165,14 @@ export const ChatSidebar = () => {
               <div
                 key={chat.id}
                 className={cn(
-                  "group relative flex items-center gap-3 rounded-xl p-3 transition-all duration-200 cursor-pointer border",
+                  "group relative flex items-center gap-2 md:gap-3 rounded-xl p-2 md:p-3 transition-all duration-200 cursor-pointer border",
                   currentChatId === chat.id
-                    ? " border-gray-400  text-gray-300   shadow-lg shadow-primary/5"
-                    : "border-transparent hover:bg-gradient-to-b from-zinc-700 to-zinc-800 text-gray-300  hover:border-border/50"
+                    ? "border-gray-400 text-gray-300 shadow-lg shadow-primary/5"
+                    : "border-transparent hover:bg-gradient-to-b from-zinc-700 to-zinc-800 text-gray-300 hover:border-border/50"
                 )}
               >
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-600 flex-shrink-0">
-                  <MessageSquare className="h-4 w-4" />
+                <div className="flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-lg text-gray-600 flex-shrink-0">
+                  <MessageSquare className="h-3.5 w-3.5 md:h-4 md:w-4" />
                 </div>
 
                 <div 
@@ -186,15 +186,15 @@ export const ChatSidebar = () => {
                       onKeyDown={(e) => handleKeyDown(e, chat.id)}
                       onBlur={() => updateChatTitle(chat.id, tempTitle)}
                       autoFocus
-                      className="h-7 text-sm bg-background"
+                      className="h-6 md:h-7 text-xs md:text-sm bg-background"
                       placeholder="Chat title..."
                     />
                   ) : (
                     <>
-                      <p className="text-sm font-medium truncate text-foreground">
+                      <p className="text-xs md:text-sm font-medium truncate text-foreground">
                         {chat.title}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-muted-foreground mt-0.5 md:mt-1">
                         {formatDate(chat.updated_at)}
                       </p>
                     </>

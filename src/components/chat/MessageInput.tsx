@@ -273,24 +273,24 @@ export const MessageInput = () => {
               size="sm"
               onClick={() => fileInputRef.current?.click()}
               disabled={!currentChatId || isLoading}
-              className="flex items-center gap-2 bg-gradient-to-b from-zinc-900 to-zinc-700"
+              className="flex items-center gap-2 bg-gradient-to-b from-zinc-900 to-zinc-700 text-sm"
             >
-              <Upload className="h-4 w-4" />
+              <Upload className="h-3.5 w-3.5 md:h-4 md:w-4" />
               <span className="hidden sm:inline">Upload File</span>
             </Button>
           </div>
         </div>
 
         {uploadedFile && (
-          <div className="mb-3 animate-in fade-in duration-200">
+          <div className="mb-2 md:mb-3 animate-in fade-in duration-200">
             <Card className="border-gray bg-gradient-to-b from-zinc-900 to-zinc-700">
-              <CardContent className="p-3">
+              <CardContent className="p-2 md:p-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <span className="text-lg">{getFileIcon(uploadedFile.type)}</span>
-                    <FileText className="h-5 w-5 text-gray-300 flex-shrink-0" />
+                  <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+                    <span className="text-base md:text-lg">{getFileIcon(uploadedFile.type)}</span>
+                    <FileText className="h-4 w-4 md:h-5 md:w-5 text-gray-300 flex-shrink-0" />
                     <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{uploadedFile.name}</p>
+                      <p className="text-xs md:text-sm font-medium truncate">{uploadedFile.name}</p>
                       <p className="text-xs text-muted-foreground">
                         {formatFileSize(uploadedFile.size)} - {uploadedFile.type || 'Unknown type'}
                       </p>
@@ -301,9 +301,9 @@ export const MessageInput = () => {
                     size="icon"
                     onClick={removeFile}
                     disabled={isLoading}
-                    className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive"
+                    className="h-7 w-7 md:h-8 md:w-8 hover:bg-destructive/10 hover:text-destructive"
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-3.5 w-3.5 md:h-4 md:w-4" />
                   </Button>
                 </div>
               </CardContent>
@@ -317,7 +317,7 @@ export const MessageInput = () => {
           onDrop={handleDrop}
         >
           <CardContent className="p-0">
-            <div className="flex gap-2 p-4">
+            <div className="flex gap-2 p-3 md:p-4">
               <Textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -327,7 +327,7 @@ export const MessageInput = () => {
                     ? "Type your message or upload a file... (Enter to send)"
                     : "Please select or create a chat to start messaging"
                 }
-                className="min-h-[80px] bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none text-base flex-1"
+                className="min-h-[80px] md:min-h-[100px] bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 resize-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none text-sm md:text-base flex-1"
                 disabled={!currentChatId || isLoading}
               />
               <div className="flex flex-col gap-2">
