@@ -37,7 +37,7 @@ const Chat = () => {
       {/* Mobile overlay backdrop */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-gradient-to-b from-zinc-800 to-zinc-900 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -46,14 +46,14 @@ const Chat = () => {
       <div className={`
         fixed md:relative h-full z-50
         transition-transform duration-300 ease-in-out
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        ${isSidebarOpen ? 'translate-x-0 bg-gradient-to-b from-zinc-800 to-zinc-900' : '-translate-x-full md:translate-x-0'}
       `}>
         <ChatSidebar />
       </div>
       
       <div className="flex flex-1 flex-col">
         {/* Hamburger menu - only visible on mobile */}
-        <div className="md:hidden border-b border-border/50 bg-background/50 backdrop-blur-sm">
+        <div className="md:hidden border-b border-border/50 bg-gradient-to-b from-zinc-800 to-zinc-950 backdrop-blur-sm">
           <Button
             variant="ghost"
             size="icon"
