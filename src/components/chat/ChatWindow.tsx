@@ -54,11 +54,11 @@ export const ChatWindow = () => {
   const calculateMessageWidth = (text: string) => {
     const charCount = text.length;
     
-    if (charCount < 30) return 'max-w-[300px]';
-    if (charCount < 80) return 'max-w-[400px]';
-    if (charCount < 150) return 'max-w-[500px]';
-    if (charCount < 250) return 'max-w-[600px]';
-    return 'max-w-[700px]';
+    if (charCount < 30) return 'max-w-[85%] md:max-w-[300px]';
+    if (charCount < 80) return 'max-w-[90%] md:max-w-[400px]';
+    if (charCount < 150) return 'max-w-[95%] md:max-w-[500px]';
+    if (charCount < 250) return 'max-w-full md:max-w-[600px]';
+    return 'max-w-full md:max-w-[700px]';
   };
 
   const renderMessageContent = (message: any) => {
@@ -79,17 +79,17 @@ export const ChatWindow = () => {
   if (!currentChatId) {
     return (
       <div className="flex h-full items-center justify-center bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300">
-  <div className="text-center max-w-md mx-auto p-8">
-    <div className="relative mb-6">
+  <div className="text-center max-w-md mx-auto p-4 md:p-8">
+    <div className="relative mb-4 md:mb-6">
       <div className="absolute -inset-4 bg-primary/10 rounded-full blur-xl"></div>
-      <MessageSquare className="relative mx-auto h-20 w-20 text-gray-400" />
+      <MessageSquare className="relative mx-auto h-16 w-16 md:h-20 md:w-20 text-gray-400" />
     </div>
 
-    <h2 className="text-2xl font-semibold bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent mb-4">
+    <h2 className="text-xl md:text-2xl font-semibold bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent mb-3 md:mb-4">
       Start a Conversation
     </h2>
 
-    <p className="text-muted-foreground leading-relaxed mb-6">
+    <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-4 md:mb-6">
       Begin a new chat to explore insights, ask questions, or collaborate with me.  
       Your next idea is just one message away.
     </p>
@@ -103,10 +103,10 @@ export const ChatWindow = () => {
 
   return (
     <ScrollArea className="h-full bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 " ref={scrollRef}>
-      <div className="mx-auto max-w-4xl space-y-6 p-6">
+      <div className="mx-auto max-w-4xl space-y-4 md:space-y-6 p-3 md:p-6">
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <h3 className="text-3xl font-semibold mb-2">How Can I help you?</h3>
+          <div className="flex flex-col items-center justify-center py-8 md:py-16 text-center">
+            <h3 className="text-2xl md:text-3xl font-semibold mb-2">How Can I help you?</h3>
         
           </div>
         ) : (
@@ -114,30 +114,30 @@ export const ChatWindow = () => {
             <div
               key={message.id}
               className={cn(
-                "flex gap-4 group animate-in fade-in duration-300",
+                "flex gap-2 md:gap-4 group animate-in fade-in duration-300",
                 message.role === 'user' && "flex-row-reverse"
               )}
             >
               {/* Avatar */}
               <div className={cn(
-                "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2",
+                "flex h-8 w-8 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full border-2 text-xs md:text-sm",
                 message.role === 'user' 
                   ? "bg-gray-500 border-primary/20" 
-                  : " border-primary/10"
+                  : "border-primary/10"
               )}>
                 {message.role === 'user' ? (
                      user?.email?.charAt(0).toUpperCase()
                 ) : (
-                 <img src="./AutoInsight.png" alt="" />
+                 <img src="./AutoInsight.png" alt="" className="w-full h-full object-cover rounded-full" />
                 )}
               </div>
 
               {/* Message Content */}
               <div className={cn(
-                "flex-1 space-y-2",
+                "flex-1 space-y-1 md:space-y-2",
                 message.text.includes('numerical_analysis') ? 'max-w-full' : calculateMessageWidth(message.text)
               )}>
-                <div className="flex items-center gap-3 mb-1">
+                <div className="flex items-center gap-2 md:gap-3 mb-1">
                  
                   <span className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
                     {formatMessageTime(message.created_at)}
@@ -145,14 +145,14 @@ export const ChatWindow = () => {
                 </div>
                 
                 <div className={cn(
-                  "rounded-2xl p-4 transition-all duration-200 ",
+                  "rounded-2xl p-3 md:p-4 transition-all duration-200",
                   message.role === 'user' 
                     ? cn(
-                        " bg-gradient-to-b from-zinc-700 to-zinc-800  text-primary-foreground",
+                        "bg-gradient-to-b from-zinc-700 to-zinc-800 text-primary-foreground",
                         "rounded-br-md shadow-primary/10 border-primary/30"
                       )
                     : cn(
-                        " bg-gradient-to-b from-zinc-800 to-zinc-700 text-card-foreground",
+                        "bg-gradient-to-b from-zinc-800 to-zinc-700 text-card-foreground",
                         "rounded-bl-md shadow-sm border-border/50"
                       )
                 )}>
