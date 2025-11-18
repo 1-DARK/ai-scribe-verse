@@ -117,6 +117,7 @@ def visualize_numerical(df, corr_matrix, outliers, numerical):
 def generate_summary(df, summary_stats, missing_values, corr_matrix, outliers, numerical):
     summary = []
 
+    # Basic info
     summary.append(
         f"The dataset contains {df.shape[0]} rows and {len(numerical)} numerical columns."
     )
@@ -126,27 +127,33 @@ def generate_summary(df, summary_stats, missing_values, corr_matrix, outliers, n
     if total_missing == 0:
         summary.append("All numerical columns are complete with no missing values.")
     else:
-        summary.append(
-            f"There are {total_missing} missing values in the numerical columns."
-        )
+        summary.append(f"There are {total_missing} missing values in the numerical columns.")
 
-    # Means
+    # Means (clean formatting)
     if not summary_stats.empty:
         means = summary_stats.loc["mean"].to_dict()
-        sample_means = dict(list(means.items())[:3])
-        summary.append(
-            f"Typical averages include: {sample_means}."
-        )
 
-    # Correlation
+        # Take first 3 means
+        sample_means = list(means.items())[:3]
+
+        # Convert to clean text (no {} or quotes)
+        mean_text = ", ".join([f"{col}: {round(val, 2)}" for col, val in sample_means])
+
+        summary.append(f"Typical averages include: {mean_text}.")
+
+    # Correlation (clean formatting)
     if not corr_matrix.empty:
         corr_pairs = corr_matrix.unstack()
-        corr_pairs = corr_pairs[corr_pairs.index.get_level_values(0) != corr_pairs.index.get_level_values(1)]
+        corr_pairs = corr_pairs[
+            corr_pairs.index.get_level_values(0) != corr_pairs.index.get_level_values(1)
+        ]
         top_corr = corr_pairs.abs().sort_values(ascending=False).head(1)
-        pair_name = f"{top_corr.index[0][0]} and {top_corr.index[0][1]}"
-        value = float(top_corr.iloc[0])
+
+        col1, col2 = top_corr.index[0]
+        corr_value = float(top_corr.iloc[0])
+
         summary.append(
-            f"The strongest correlation is between {pair_name} (correlation: {value:.2f})."
+            f"The strongest correlation is between {col1} and {col2} with a value of {corr_value:.2f}."
         )
 
     # Outliers
@@ -155,7 +162,8 @@ def generate_summary(df, summary_stats, missing_values, corr_matrix, outliers, n
     else:
         summary.append("No major outliers were found in the numerical columns.")
 
-    summary.append("Overall, the dataset is clean and suitable for analysis or ML tasks.")
+    # Final note
+    summary.append("Overall, the dataset is clean and suitable for analysis or machine learning tasks.")
 
     return " ".join(summary)
 
