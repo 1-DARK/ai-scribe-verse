@@ -81,29 +81,29 @@ def visualize_categorical(df, categorical):
 # Function to generate summary using GPT-2
 def generate_summary(df, analysis, categorical):
 
-    # Prepare counts
+   
     counts = {
         col.replace("_counts", ""): vals
         for col, vals in analysis.items()
         if col != "missing_values"
     }
 
-    # Missing values
+
     missing = analysis["missing_values"]
 
     summary_parts = []
 
-    # --- Overview ---
+
     summary_parts.append(
         f"The dataset contains {len(df)} rows and {len(categorical)} categorical columns."
     )
 
-    # --- Majority categories ---
+    
     majority_info = {}
     for col, dist in counts.items():
         if dist:
             sorted_vals = sorted(dist.items(), key=lambda x: x[1], reverse=True)
-            top = sorted_vals[0]  # e.g. ('Male', 3)
+            top = sorted_vals[0] 
             majority_info[col] = top
 
     if majority_info:
@@ -116,7 +116,7 @@ def generate_summary(df, analysis, categorical):
     else:
         summary_parts.append("The dataset does not show clear dominant categories.")
 
-    # --- Rare categories ---
+
     rare_info = {}
     for col, dist in counts.items():
         rare = [k for k, v in dist.items() if v == 1]
@@ -133,7 +133,7 @@ def generate_summary(df, analysis, categorical):
     else:
         summary_parts.append("No extremely rare categories were detected.")
 
-    # --- Missing values ---
+   
     total_missing = sum(missing.values())
     if total_missing == 0:
         summary_parts.append("There are no missing values in the categorical columns.")
@@ -142,7 +142,7 @@ def generate_summary(df, analysis, categorical):
             f"The dataset contains {total_missing} missing values across categorical columns."
         )
 
-    # --- Final remark ---
+
     summary_parts.append(
         "Overall, the dataset is clean and suitable for exploratory analysis or simple classification tasks."
     )
@@ -205,7 +205,7 @@ async def root():
     """
 
 if __name__ == "__main__":
-    import uvicorn 
+    import uvicorn   # pyright: ignore[reportMissingImports]
     uvicorn.run(app, host="0.0.0.0", port=8002)
 
 
