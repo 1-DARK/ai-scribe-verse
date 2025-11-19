@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { ChartFullscreenViewer } from './ChartFullscreenViewer';
+import { Maximize2 } from 'lucide-react';
 
 interface NumericalAnalysisProps {
   data: {
@@ -19,6 +22,8 @@ interface NumericalAnalysisProps {
 }
 
 export const NumericalAnalysisDisplay = ({ data }: NumericalAnalysisProps) => {
+  const [fullscreenImage, setFullscreenImage] = useState<{ url: string; title: string } | null>(null);
+
   return (
     <div className="space-y-3 md:space-y-4 w-full max-w-full overflow-hidden">
 
@@ -161,24 +166,43 @@ export const NumericalAnalysisDisplay = ({ data }: NumericalAnalysisProps) => {
           </CardHeader>
           <CardContent className="p-2 md:p-6">
             <div className="grid grid-cols-1 gap-3 md:gap-4">
-              {Object.entries(data.plots).map(([name, base64]) => (
-                <div key={name} className="space-y-2 max-w-full overflow-hidden">
-                  <h4 className="text-xs md:text-sm font-medium text-gray-300 capitalize px-1">
-                    {name.replace(/_/g, ' ')}
-                  </h4>
-                  <div className="w-full max-w-full overflow-hidden">
-                    <img
-                      src={`data:image/png;base64,${base64}`}
-                      alt={name}
-                      className="w-full h-auto max-w-full rounded-lg border border-border object-contain"
-                    />
+              {Object.entries(data.plots).map(([name, base64]) => {
+                const imageUrl = `data:image/png;base64,${base64}`;
+                return (
+                  <div key={name} className="space-y-2 max-w-full overflow-hidden">
+                    <h4 className="text-xs md:text-sm font-medium text-gray-300 capitalize px-1">
+                      {name.replace(/_/g, ' ')}
+                    </h4>
+                    <div className="w-full max-w-full overflow-hidden relative group">
+                      <img
+                        src={imageUrl}
+                        alt={name}
+                        className="w-full h-auto max-w-full rounded-lg border border-border object-contain cursor-pointer transition-opacity hover:opacity-90"
+                        onClick={() => setFullscreenImage({ url: imageUrl, title: name })}
+                      />
+                      <button
+                        onClick={() => setFullscreenImage({ url: imageUrl, title: name })}
+                        className="absolute top-2 right-2 p-1.5 md:p-2 bg-black/50 hover:bg-black/70 rounded-lg transition-all opacity-0 group-hover:opacity-100 md:opacity-100"
+                        aria-label="View fullscreen"
+                      >
+                        <Maximize2 className="h-3 w-3 md:h-4 md:w-4 text-white" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>
       )}
+
+      {/* Fullscreen Viewer */}
+      <ChartFullscreenViewer
+        imageUrl={fullscreenImage?.url || ''}
+        title={fullscreenImage?.title || ''}
+        isOpen={!!fullscreenImage}
+        onClose={() => setFullscreenImage(null)}
+      />
 
          {/* Summary */}
          {data.summary && (
