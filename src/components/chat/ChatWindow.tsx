@@ -54,11 +54,11 @@ export const ChatWindow = () => {
   const calculateMessageWidth = (text: string) => {
     const charCount = text.length;
     
-    if (charCount < 30) return 'max-w-[85%] md:max-w-[300px]';
-    if (charCount < 80) return 'max-w-[90%] md:max-w-[400px]';
-    if (charCount < 150) return 'max-w-[95%] md:max-w-[500px]';
-    if (charCount < 250) return 'max-w-full md:max-w-[600px]';
-    return 'max-w-full md:max-w-[700px]';
+    if (charCount < 30) return 'w-auto max-w-[85%] md:max-w-[300px]';
+    if (charCount < 80) return 'w-auto max-w-[90%] md:max-w-[400px]';
+    if (charCount < 150) return 'w-auto max-w-[95%] md:max-w-[500px]';
+    if (charCount < 250) return 'w-full max-w-full md:max-w-[600px]';
+    return 'w-full max-w-full md:max-w-[700px]';
   };
 
   const renderMessageContent = (message: any) => {
@@ -73,7 +73,7 @@ export const ChatWindow = () => {
     } catch {
       // Not JSON or not an analysis, render as text
     }
-    return <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{message.text}</p>;
+    return <p className="text-sm leading-relaxed whitespace-pre-wrap break-words word-break overflow-wrap-anywhere">{message.text}</p>;
   };
 
   if (!currentChatId) {
@@ -103,7 +103,7 @@ export const ChatWindow = () => {
 
   return (
     <ScrollArea className="h-full bg-gradient-to-b from-zinc-800 to-zinc-900 text-gray-300 " ref={scrollRef}>
-      <div className="mx-auto max-w-4xl space-y-4 md:space-y-6 p-3 md:p-6">
+      <div className="mx-auto w-full max-w-4xl space-y-4 md:space-y-6 p-3 md:p-6">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 md:py-16 text-center">
             <h3 className="text-2xl md:text-3xl font-semibold mb-2">How Can I help you?</h3>
@@ -134,8 +134,8 @@ export const ChatWindow = () => {
 
               {/* Message Content */}
               <div className={cn(
-                "flex-1 space-y-1 md:space-y-2",
-                message.text.includes('numerical_analysis') ? 'max-w-full' : calculateMessageWidth(message.text)
+                "flex-1 space-y-1 md:space-y-2 min-w-0",
+                message.text.includes('numerical_analysis') ? 'w-full max-w-full' : calculateMessageWidth(message.text)
               )}>
                 <div className="flex items-center gap-2 md:gap-3 mb-1">
                  
@@ -145,7 +145,7 @@ export const ChatWindow = () => {
                 </div>
                 
                 <div className={cn(
-                  "rounded-2xl p-3 md:p-4 transition-all duration-200",
+                  "rounded-2xl p-3 md:p-4 transition-all duration-200 w-full overflow-hidden",
                   message.role === 'user' 
                     ? cn(
                         "bg-gradient-to-b from-zinc-700 to-zinc-800 text-primary-foreground",
