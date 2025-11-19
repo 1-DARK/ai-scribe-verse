@@ -121,28 +121,28 @@ const Auth = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-zinc-950 to-zinc-800 p-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-zinc-950 to-zinc-800 p-3 md:p-4">
       <Card className="w-full max-w-md bg-gradient-to-b from-zinc-800 to-zinc-950">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4 inline-flex rounded-lg bg-gradient-to-b from-zinc-900 to-zinc-800 p-3">
-            <MessageSquare className="h-8 w-8 text-gray-300" />
+        <CardHeader className="text-center p-4 md:p-6">
+          <div className="mx-auto mb-3 md:mb-4 inline-flex rounded-lg bg-gradient-to-b from-zinc-900 to-zinc-800 p-2.5 md:p-3">
+            <MessageSquare className="h-6 w-6 md:h-8 md:w-8 text-gray-300" />
           </div>
-          <CardTitle className="text-2xl">Welcome to AI Chat</CardTitle>
-          <CardDescription>Sign in or create an account to get started</CardDescription>
+          <CardTitle className="text-xl md:text-2xl">Welcome to AI Chat</CardTitle>
+          <CardDescription className="text-sm md:text-base">Sign in or create an account to get started</CardDescription>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="p-4 md:p-6">
           <Tabs value={activeTab} onValueChange={(v) => handleTabChange(v as 'signin' | 'signup')}>
-            <TabsList className="grid w-full grid-cols-2 bg-zinc-800">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-zinc-800 h-9 md:h-10">
+              <TabsTrigger value="signin" className="text-sm md:text-base">Sign In</TabsTrigger>
+              <TabsTrigger value="signup" className="text-sm md:text-base">Sign Up</TabsTrigger>
             </TabsList>
 
             {/* Sign In */}
-            <TabsContent value="signin">
-              <form onSubmit={handleSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
+            <TabsContent value="signin" className="mt-4 md:mt-6">
+              <form onSubmit={handleSignIn} className="space-y-3 md:space-y-4">
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="signin-email" className="text-sm md:text-base">Email</Label>
                   <Input
                     id="signin-email"
                     type="email"
@@ -150,12 +150,12 @@ const Auth = () => {
                     value={signInEmail}
                     onChange={(e) => setSignInEmail(e.target.value)}
                     required
-                    className="bg-zinc-800"
+                    className="bg-zinc-800 h-9 md:h-10 text-sm md:text-base"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="signin-password" className="text-sm md:text-base">Password</Label>
                   <div className="relative">
                     <Input
                       id="signin-password"
@@ -164,42 +164,42 @@ const Auth = () => {
                       value={signInPassword}
                       onChange={(e) => setSignInPassword(e.target.value)}
                       required
-                      className="bg-zinc-800 pr-10"
+                      className="bg-zinc-800 pr-10 h-9 md:h-10 text-sm md:text-base"
                     />
                     <button
                       type="button"
                       onClick={() => setSignInShowPassword((s) => !s)}
-                      className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-200"
+                      className="absolute right-3 top-2 md:top-2.5 text-gray-400 hover:text-gray-200"
                     >
-                      {signInShowPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      {signInShowPassword ? <EyeOff className="h-4 w-4 md:h-[18px] md:w-[18px]" /> : <Eye className="h-4 w-4 md:h-[18px] md:w-[18px]" />}
                     </button>
                   </div>
                 </div>
 
-                <Button type="submit" className="w-full bg-gradient-to-b from-zinc-700 to-zinc-800" disabled={loading}>
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Button type="submit" className="w-full bg-gradient-to-b from-zinc-700 to-zinc-800 h-9 md:h-10 text-sm md:text-base" disabled={loading}>
+                  {loading && <Loader2 className="mr-2 h-3 w-3 md:h-4 md:w-4 animate-spin" />}
                   Sign In
                 </Button>
               </form>
             </TabsContent>
 
             {/* Sign Up */}
-            <TabsContent value="signup">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signup-name">Name (optional)</Label>
+            <TabsContent value="signup" className="mt-4 md:mt-6">
+              <form onSubmit={handleSignUp} className="space-y-3 md:space-y-4">
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="signup-name" className="text-sm md:text-base">Name (optional)</Label>
                   <Input
                     id="signup-name"
                     type="text"
                     placeholder="Your Name"
                     value={signUpName}
                     onChange={(e) => setSignUpName(e.target.value)}
-                    className="bg-zinc-800"
+                    className="bg-zinc-800 h-9 md:h-10 text-sm md:text-base"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="signup-email" className="text-sm md:text-base">Email</Label>
                   <Input
                     id="signup-email"
                     type="email"
@@ -207,37 +207,35 @@ const Auth = () => {
                     value={signUpEmail}
                     onChange={(e) => setSignUpEmail(e.target.value)}
                     required
-                    className="bg-zinc-800"
+                    className="bg-zinc-800 h-9 md:h-10 text-sm md:text-base"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
+                <div className="space-y-1.5 md:space-y-2">
+                  <Label htmlFor="signup-password" className="text-sm md:text-base">Password</Label>
                   <div className="relative">
                     <Input
                       id="signup-password"
                       type={signUpShowPassword ? 'text' : 'password'}
-                    placeholder="********"
+                      placeholder="At least 6 characters"
                       value={signUpPassword}
-                      onChange={(e) => setSignUpPassword(e.target.value)} // spaces allowed
+                      onChange={(e) => setSignUpPassword(e.target.value)}
                       required
-                      className="bg-zinc-800 pr-10"
+                      className="bg-zinc-800 pr-10 h-9 md:h-10 text-sm md:text-base"
                     />
                     <button
                       type="button"
                       onClick={() => setSignUpShowPassword((s) => !s)}
-                      className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-200"
+                      className="absolute right-3 top-2 md:top-2.5 text-gray-400 hover:text-gray-200"
                     >
-                      {signUpShowPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      {signUpShowPassword ? <EyeOff className="h-4 w-4 md:h-[18px] md:w-[18px]" /> : <Eye className="h-4 w-4 md:h-[18px] md:w-[18px]" />}
                     </button>
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Password must be at least 6 characters (spaces are not counted)
-                  </p>
+                  <p className="text-xs text-muted-foreground">Password must be at least 6 characters</p>
                 </div>
 
-                <Button type="submit" className="w-full bg-gradient-to-b from-zinc-700 to-zinc-800" disabled={loading}>
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Button type="submit" className="w-full bg-gradient-to-b from-zinc-700 to-zinc-800 h-9 md:h-10 text-sm md:text-base" disabled={loading}>
+                  {loading && <Loader2 className="mr-2 h-3 w-3 md:h-4 md:w-4 animate-spin" />}
                   Create Account
                 </Button>
               </form>
