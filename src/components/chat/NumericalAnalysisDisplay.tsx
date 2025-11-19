@@ -20,15 +20,15 @@ interface NumericalAnalysisProps {
 
 export const NumericalAnalysisDisplay = ({ data }: NumericalAnalysisProps) => {
   return (
-    <div className="space-y-4 w-full">
+    <div className="space-y-3 md:space-y-4 w-full max-w-full overflow-hidden">
 
       {/* Column Types */}
       {data.column_types?.numerical && data.column_types.numerical.length > 0 && (
-        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
-          <CardHeader>
-            <CardTitle className="text-lg">Numerical Columns</CardTitle>
+        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900 max-w-full">
+          <CardHeader className="p-3 md:p-6">
+            <CardTitle className="text-sm md:text-lg">Numerical Columns</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-3 md:p-6">
             <div className="flex flex-wrap gap-2">
               {data.column_types.numerical.map((col, idx) => (
                 <Badge key={idx} variant="secondary" className="text-xs">
@@ -155,22 +155,24 @@ export const NumericalAnalysisDisplay = ({ data }: NumericalAnalysisProps) => {
 
       {/* Plots */}
       {data.plots && Object.keys(data.plots).length > 0 && (
-        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
+        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900 max-w-full overflow-hidden">
           <CardHeader>
-            <CardTitle className="text-lg">Visualizations</CardTitle>
+            <CardTitle className="text-sm md:text-lg">Visualizations</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 gap-4 " >
+          <CardContent className="p-2 md:p-6">
+            <div className="grid grid-cols-1 gap-3 md:gap-4">
               {Object.entries(data.plots).map(([name, base64]) => (
-                <div key={name} className="space-y-2">
-                  <h4 className="text-sm font-medium text-gray-300 capitalize">
+                <div key={name} className="space-y-2 max-w-full overflow-hidden">
+                  <h4 className="text-xs md:text-sm font-medium text-gray-300 capitalize px-1">
                     {name.replace(/_/g, ' ')}
                   </h4>
-                  <img
-                    src={`data:image/png;base64,${base64}`}
-                    alt={name}
-                    className="w-full rounded-lg border border-border"
-                  />
+                  <div className="w-full max-w-full overflow-hidden">
+                    <img
+                      src={`data:image/png;base64,${base64}`}
+                      alt={name}
+                      className="w-full h-auto max-w-full rounded-lg border border-border object-contain"
+                    />
+                  </div>
                 </div>
               ))}
             </div>

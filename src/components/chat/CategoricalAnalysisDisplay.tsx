@@ -21,16 +21,16 @@ interface CategoricalAnalysisProps {
 
 export const CategoricalAnalysisDisplay = ({ data }: CategoricalAnalysisProps) => {
   return (
-    <div className="space-y-4 w-full">
+    <div className="space-y-3 md:space-y-4 w-full max-w-full overflow-hidden">
       {/* Column Types */}
       {data.column_types?.categorical && data.column_types.categorical.length > 0 && (
-        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
+        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900 max-w-full">
+          <CardHeader className="p-3 md:p-6">
+            <CardTitle className="text-sm md:text-lg flex items-center gap-2">
                Column Types
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-3 md:p-6">
             <div>
               <h4 className="text-sm font-semibold mb-2 text-gray-200">Categorical Columns:</h4>
               <div className="flex flex-wrap gap-2">
@@ -153,24 +153,26 @@ export const CategoricalAnalysisDisplay = ({ data }: CategoricalAnalysisProps) =
 
       {/* Plots */}
       {data.plots && Object.keys(data.plots).length > 0 && (
-        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900">
+        <Card className="bg-gradient-to-b from-zinc-800 to-zinc-900 max-w-full overflow-hidden">
           <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
+            <CardTitle className="text-sm md:text-lg flex items-center gap-2">
                Visualizations
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-2 md:p-6">
+            <div className="space-y-3 md:space-y-4">
               {Object.entries(data.plots).map(([key, base64]) => (
-                <div key={key} className="space-y-2">
-                  <h4 className="text-sm font-semibold text-gray-200 capitalize">
+                <div key={key} className="space-y-2 max-w-full overflow-hidden">
+                  <h4 className="text-xs md:text-sm font-semibold text-gray-200 capitalize px-1">
                     {key.replace(/_/g, ' ')}
                   </h4>
-                  <img
-                    src={`data:image/png;base64,${base64}`}
-                    alt={key}
-                    className="w-full rounded-lg border border-gray-700"
-                  />
+                  <div className="w-full max-w-full overflow-hidden">
+                    <img
+                      src={`data:image/png;base64,${base64}`}
+                      alt={key}
+                      className="w-full h-auto max-w-full rounded-lg border border-gray-700 object-contain"
+                    />
+                  </div>
                 </div>
               ))}
             </div>
